@@ -1,0 +1,45 @@
+{
+    "manifest_version": 2,
+    "name": "EasySwitch",
+    "version": "0.0.1",
+    "description": "极简的多平台开发账号切换工具!",
+    "icons": {
+        "16": "assets/logo.png",
+        "48": "assets/logo.png",
+        "128": "assets/logo.png"
+    },
+    "background": {
+        "page": "libs/views/background.html"
+    },
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "browser_action": {
+        "default_icon": "assets/logo.png",
+        "default_title": "极简的多平台开发账号切换工具!",
+        "default_popup": "libs/views/popup.html"
+    },
+    "web_accessible_resources": [
+        "libs/script/inject.js"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "libs/script/content.js"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "permissions": [
+        "contextMenus",
+        "webRequest",
+        "webRequestBlocking",
+        "storage"
+    ],
+    "options_page": "/libs/views/options.html",
+    "options_ui": {
+        "page": "/libs/views/options.html",
+        "chrome_style": true
+    }
+}

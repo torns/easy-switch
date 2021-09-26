@@ -1,0 +1,46 @@
+{
+  "name": "easyswitch",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Yonghu",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --config build/webpack.dev.config.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@vue/compiler-sfc": "^3.2.7",
+    "@types/chrome": "^0.0.154",
+    "autoprefixer": "^10.3.3",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^9.0.1",
+    "css-loader": "^4.3.0",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.2",
+    "less": "^3.12.2",
+    "less-loader": "^7.0.1",
+    "less-plugin-npm-import": "^2.1.0",
+    "mini-css-extract-plugin": "^2.2.2",
+    "postcss-loader": "^6.1.1",
+    "style-loader": "^3.2.1",
+    "ts-loader": "^9.2.5",
+    "typescript": "^4.4.2",
+    "url-loader": "^4.1.1",
+    "vue": "^3.1.2",
+    "vue-loader": "^16.2.0",
+    "vue-router": "^4.0.5",
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.8.0",
+    "webpackbar": "^5.0.0-3"
+  },
+  "browserslist": [
+    "defaults",
+    "not ie < 11",
+    "last 2 versions",
+    "> 1%",
+    "iOS 7",
+    "last 3 iOS versions"
+  ]
+}
