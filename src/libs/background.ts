@@ -95,13 +95,13 @@ function getPageInfo() {
     }
   });
 }
-chrome.contextMenus.create({
-  title: '登录',
-  onclick: async function () {
-    let tabId = await getCurrentTabId();
-    sendMessageToContentScript({
-      key: 'clickUser',
-      info: userlist[pageInfo.get(tabId).key][0],
-    });
-  },
-});
+// chrome.contextMenus.create({
+//   title: '登录',
+//   onclick: async function () {
+//     let tabId = await getCurrentTabId();
+//     sendMessageToContentScript({
+//       key: 'clickUser',
+//       info: userlist[pageInfo.get(tabId).key][0],
+//     });
+//   },
+// });

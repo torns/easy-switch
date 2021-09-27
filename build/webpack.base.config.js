@@ -3,6 +3,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 const WebpackBarPlugin = require('webpackbar');
 const autoprefixer = require('autoprefixer');
+const webpack = require('webpack');
 const copyResources = [
   {
     from: path.resolve(__dirname, path.join('../src/manifest.json')),
@@ -11,6 +12,10 @@ const copyResources = [
   {
     from: path.resolve(__dirname, path.join('../src/assets')),
     to: `${path.resolve('dist')}/assets`,
+  },
+  {
+    from: path.resolve(__dirname, path.join('../src/style')),
+    to: `${path.resolve('dist')}/libs/style`,
   },
   {
     from: path.resolve(__dirname, path.join('../src/libs/plugin/hot-reload.js')),
@@ -84,7 +89,7 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|jpeg|gif)$/,
         use: [
           {
             loader: 'file-loader',
@@ -97,6 +102,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
     alias: {
       '@': path.join(__dirname, '../src'),
+      process: 'process/browser',
     },
   },
   plugins: [
@@ -105,6 +111,9 @@ module.exports = {
       patterns: copyResources,
     }),
     new VueLoaderPlugin(),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
   ],
   stats: 'errors-only',
 };

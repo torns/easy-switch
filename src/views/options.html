@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+<!--
+ * @Author: jinhu.yang
+ * @Date: 2021-08-17 10:17:00
+ * @LastEditors: jinhu.yang
+ * @LastEditTime: 2021-08-18 15:04:28
+-->
+<html>
   <head>
+    <title>option</title>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>插件配置</title>
+    <link rel="stylesheet" href="../style/options.css" />
   </head>
-  <body></body>
+  <body>
+    <div class="operate-content">
+      <label id="importFile" class="import operate-btn">
+        导入
+        <input type="file" name="importFile" id="importFile" class="importFile" />
+      </label>
+      <div id="exportFile" class="export operate-btn">导出</div>
+    </div>
+    <div class="option-content"></div>
+  </body>
 </html>
