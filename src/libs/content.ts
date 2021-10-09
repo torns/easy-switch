@@ -7,7 +7,7 @@ const autoInput = (userInfo: { user: UserType; autoLogin: boolean; code: number 
   }
   const passWordInputEle = document.querySelector('input[placeholder*="密码"]');
   const validateInputEle = document.querySelector('input[placeholder*="验证码"]');
-  const loginEle = document.querySelector('.login-btn');
+  let loginEle = document.querySelector('.login-btn');
   if (userInputEle && passWordInputEle) {
     const event = document.createEvent('HTMLEvents');
     event.initEvent('input', false, true);
@@ -15,6 +15,14 @@ const autoInput = (userInfo: { user: UserType; autoLogin: boolean; code: number 
     (passWordInputEle as InputHTMLAttributes).value = userInfo.user.password;
     userInputEle.dispatchEvent(event);
     passWordInputEle.dispatchEvent(event);
+    if (!loginEle) {
+      const loginList = document.querySelectorAll('button>span');
+      loginList.forEach((x) => {
+        if (x.innerHTML.toString().indexOf('登录') !== -1 && x.parentElement) {
+          loginEle = x.parentElement;
+        }
+      });
+    }
     if (userInfo.autoLogin && validateInputEle && loginEle) {
       (validateInputEle as InputHTMLAttributes).value = userInfo.code;
       validateInputEle.dispatchEvent(event);
