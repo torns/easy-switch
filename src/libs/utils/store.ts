@@ -4,7 +4,7 @@ interface LooseObject {
 /**
  * 获取store
  */
-export const getStoreKey = (keys: Array<string>): Promise<any> => {
+export const getStoreKey = <T>(keys: Array<string>): Promise<T> => {
   return new Promise((resolve, reject) => {
     let store: LooseObject = {};
     keys.forEach((x) => {
@@ -12,7 +12,7 @@ export const getStoreKey = (keys: Array<string>): Promise<any> => {
     });
     try {
       chrome.storage.local.get(store, (rst) => {
-        resolve(rst);
+        resolve(rst as T);
       });
     } catch (error) {
       reject(error);

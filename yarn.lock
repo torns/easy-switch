@@ -688,6 +688,18 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.14.5"
 
+"@babel/plugin-transform-runtime@^7.15.0":
+  version "7.15.0"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-runtime/-/plugin-transform-runtime-7.15.0.tgz#d3aa650d11678ca76ce294071fda53d7804183b3"
+  integrity sha512-sfHYkLGjhzWTq6xsuQ01oEsUYjkHRux9fW1iUA68dC7Qd8BS1Unq4aZ8itmQp95zUzIcyR2EbNMTzAicFj+guw==
+  dependencies:
+    "@babel/helper-module-imports" "^7.14.5"
+    "@babel/helper-plugin-utils" "^7.14.5"
+    babel-plugin-polyfill-corejs2 "^0.2.2"
+    babel-plugin-polyfill-corejs3 "^0.2.2"
+    babel-plugin-polyfill-regenerator "^0.2.2"
+    semver "^6.3.0"
+
 "@babel/plugin-transform-shorthand-properties@^7.14.5":
   version "7.14.5"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-shorthand-properties/-/plugin-transform-shorthand-properties-7.14.5.tgz#97f13855f1409338d8cadcbaca670ad79e091a58"
@@ -894,6 +906,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@popperjs/core@^2.10.1":
+  version "2.10.2"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.10.2.tgz#0798c03351f0dea1a5a4cabddf26a55a7cbee590"
+  integrity sha512-IXf3XA7+XyN7CP9gGh/XB0UxVMlvARGEgGXLubFICsUMGz6Q+DU+i4gGlpOxTjKvXjkJDJC8YdqdKkDj9qZHEQ==
+
 "@types/chrome@^0.0.154":
   version "0.0.154"
   resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.154.tgz#7992e97364f4447e961028ad07ac843d0b052c2d"
@@ -1073,6 +1090,21 @@
   version "3.2.7"
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.7.tgz#c792bf92d19025e7940358536d468218a11eeedb"
   integrity sha512-YwGOcNZjOY/MmadpzFBXWyHEwZSf0lVU4XF5zpD7tXC9dmqjdo38Jkk06wATu4LYHDPW4emXKMB5YLFPWPkwFA==
+
+"@vueuse/core@~6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-6.1.0.tgz#8137c291cf49b11c2deda4d5079096e55b36fc28"
+  integrity sha512-6KienU5QOWKuDqvHytep14274IGKyLlACzXjifOrgDQMkqvWZIUnDhpckT/1+O8n8DN59d5wzzICZI/2sfGCyg==
+  dependencies:
+    "@vueuse/shared" "6.1.0"
+    vue-demi "*"
+
+"@vueuse/shared@6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-6.1.0.tgz#1375fd41acefe52f9a1842f3c6a8a348786535ba"
+  integrity sha512-teW0TUQryGnEprHeOI6oH8NPVJBirknxksEiNCtdEjIi8W7JSTg8JPO+e1XlGI6ly24NDlDXUDYaHJayiaXjuw==
+  dependencies:
+    vue-demi "*"
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
@@ -1299,6 +1331,11 @@ asap@~2.0.3:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
   integrity sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
+
+async-validator@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/async-validator/-/async-validator-4.0.3.tgz#c8ecd6b28fc8e18b14be4ec7c704641f999d377d"
+  integrity sha512-LVoIbJNHPKsO7FMLamo88uxdrvayGkF3vLTMTeiN3CqAbP3qSafLRc6yx3Sq9lHkiEOLNpoA2jwwnfGDdu1SMQ==
 
 autoprefixer@^10.3.3:
   version "10.3.3"
@@ -1687,6 +1724,11 @@ csstype@^2.6.8:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.17.tgz#4cf30eb87e1d1a005d8b6510f95292413f6a1c0e"
   integrity sha512-u1wmTI1jJGzCJzWndZo8mk4wnPTZd1eOIYTYvuEyOQGfmDl3TrabCCfKnOC86FZwW/9djqTl933UF/cS425i9A==
 
+dayjs@^1.10.7:
+  version "1.10.7"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
+  integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
+
 debug@^4.1.0, debug@^4.1.1:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.2.tgz#f0a49c18ac8779e31d4a0c6029dfb76873c7428b"
@@ -1770,6 +1812,20 @@ electron-to-chromium@^1.3.811:
   version "1.3.827"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.827.tgz#c725e8db8c5be18b472a919e5f57904512df0fc1"
   integrity sha512-ye+4uQOY/jbjRutMcE/EmOcNwUeo1qo9aKL2tPyb09cU3lmxNeyDF4RWiemmkknW+p29h7dyDqy02higTxc9/A==
+
+element-plus@^1.1.0-beta.19:
+  version "1.1.0-beta.19"
+  resolved "https://registry.yarnpkg.com/element-plus/-/element-plus-1.1.0-beta.19.tgz#234f3bc3f1d822a7102045e7ee1239b675f27acc"
+  integrity sha512-eKJId8un12eoaL88lfLMBtDxRUJfrAQP3bav9p2QG2agOXu3cvYDGBtT773P0ZEm3/97t+itRbxYIYYLV4iNeQ==
+  dependencies:
+    "@popperjs/core" "^2.10.1"
+    "@vueuse/core" "~6.1.0"
+    async-validator "^4.0.3"
+    dayjs "^1.10.7"
+    lodash "^4.17.21"
+    memoize-one "^5.2.1"
+    normalize-wheel-es "^1.1.0"
+    resize-observer-polyfill "^1.5.1"
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -2509,6 +2565,11 @@ make-dir@^3.0.2, make-dir@^3.1.0:
   dependencies:
     semver "^6.0.0"
 
+memoize-one@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.2.1.tgz#8337aa3c4335581839ec01c3d594090cebe8f00e"
+  integrity sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==
+
 merge-source-map@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/merge-source-map/-/merge-source-map-1.1.0.tgz#2fdde7e6020939f70906a68f2d7ae685e4c8c646"
@@ -2624,6 +2685,11 @@ normalize-range@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/normalize-range/-/normalize-range-0.1.2.tgz#2d10c06bdfd312ea9777695a4d28439456b75942"
   integrity sha1-LRDAa9/TEuqXd2laTShDlFa3WUI=
+
+normalize-wheel-es@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/normalize-wheel-es/-/normalize-wheel-es-1.1.0.tgz#db017af1dd5d4c6222c07ae38bc224049d25861e"
+  integrity sha512-gkcE5xzp8WkSGgu2HItXePGyh3qDOetgPYg0RnjclOIaWTCMB75NTrk0t6KVlbm6ShSikV3ykBFZMiR9GDkvkA==
 
 npm-run-path@^4.0.1:
   version "4.0.1"
@@ -3054,6 +3120,11 @@ renderkid@^2.0.6:
     lodash "^4.17.21"
     strip-ansi "^3.0.1"
 
+resize-observer-polyfill@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
+  integrity sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==
+
 resolve-cwd@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/resolve-cwd/-/resolve-cwd-3.0.0.tgz#0f0075f1bb2544766cf73ba6a6e2adfebcb13f2d"
@@ -3464,6 +3535,11 @@ v8-compile-cache@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/v8-compile-cache/-/v8-compile-cache-2.3.0.tgz#2de19618c66dc247dcfb6f99338035d8245a2cee"
   integrity sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA==
+
+vue-demi@*:
+  version "0.11.4"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.11.4.tgz#6101992fe4724cf5634018a16e953f3052e94e2a"
+  integrity sha512-/3xFwzSykLW2HiiLie43a+FFgNOcokbBJ+fzvFXd0r2T8MYohqvphUyDQ8lbAwzQ3Dlcrb1c9ykifGkhSIAk6A==
 
 vue-loader@^16.2.0:
   version "16.5.0"

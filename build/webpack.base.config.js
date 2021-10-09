@@ -69,7 +69,18 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['css-loader', 'postcss-loader'],
+        use: [
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [autoprefixer],
+              },
+            },
+          },
+        ],
+        exclude: /node_modules/,
       },
       {
         test: /\.less$/,
@@ -89,7 +100,7 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(png|jpg|jpeg|gif)$/,
+        test: /\.(png|jpg|jpeg|gif|eot|svg|ttf|woff|woff2)$/,
         use: [
           {
             loader: 'file-loader',
@@ -117,6 +128,9 @@ module.exports = {
     new VueLoaderPlugin(),
     new webpack.ProvidePlugin({
       process: 'process/browser',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
   ],
   stats: 'errors-only',

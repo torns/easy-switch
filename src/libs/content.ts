@@ -1,5 +1,6 @@
 import { InputHTMLAttributes } from '@vue/runtime-dom';
 import { createWorker } from 'tesseract.js';
+import { getPixel } from './utils/canvas';
 const autoInput = (user: any) => {
   let userInputEle = document.querySelector('input[placeholder*="用户名"]');
   let verifyCodeEle = document.querySelector('img[alt*="验证码"]');
@@ -14,14 +15,19 @@ const autoInput = (user: any) => {
     const worker = createWorker({
       logger: (m) => console.log(m),
     });
+    const canvas = getPixel(verifyCodeEle as HTMLImageElement);
     (async () => {
       await worker.load();
+      await worker.loadLanguage('eng');
+      await worker.initialize('eng');
       await worker.setParameters({
         tessedit_char_whitelist: '0123456789',
       });
       const {
         data: { text },
-      } = await worker.recognize(verifyCodeEle as HTMLImageElement);
+      } = await worker.recognize(canvas as HTMLCanvasElement);
+
+      console.log(verifyCodeEle as HTMLImageElement);
       console.log('验证码：' + text);
       code = text;
       await worker.terminate();

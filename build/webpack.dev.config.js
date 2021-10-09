@@ -6,10 +6,10 @@ const path = require('path');
 module.exports = merge(webapckBaseConfig, {
   mode: 'development',
   entry: {
-    background: path.resolve(__dirname, '../src/libs/background.ts'),
-    popup: path.resolve(__dirname, '../src/popup/index.ts'),
-    options: path.resolve(__dirname, '../src/libs/options.ts'),
+    popup: path.resolve(__dirname, '../src/source/popup.ts'),
+    option: path.resolve(__dirname, '../src/source/option.ts'),
     content: path.resolve(__dirname, '../src/libs/content.ts'),
+    background: path.resolve(__dirname, '../src/libs/background.ts'),
   }, // 入口文件
   output: {
     filename: '[name].js',
@@ -24,14 +24,14 @@ module.exports = merge(webapckBaseConfig, {
       chunks: ['popup'],
     }),
     new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './../src/views/option.html'),
+      filename: '../views/option.html',
+      chunks: ['option'],
+    }),
+    new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './../src/views/background.html'),
       filename: '../views/background.html',
       chunks: ['background'],
-    }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './../src/views/options.html'),
-      filename: '../views/options.html',
-      chunks: ['options'],
     }),
     new CleanWebpackPlugin(),
   ],
