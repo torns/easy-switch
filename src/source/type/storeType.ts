@@ -1,8 +1,9 @@
 export interface SystemType {
+  [key: string]: any;
   id: string | undefined;
   title: string | undefined;
   urls: string[];
-  sort: number | undefined;
+  sort: number;
   autoLogin: boolean;
   showUser?: boolean;
   code?: string;
@@ -13,5 +14,5 @@ export interface UserType {
   name: string | undefined;
   password: string | undefined;
   note: string | undefined;
-  sort: number | undefined;
+  sort: number;
 }

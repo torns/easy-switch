@@ -2,8 +2,11 @@
   <div class="option">
     <div class="option-header">
       <el-button type="primary" @click="createOrEditor('add', 'system', null, null)" size="mini">添加平台</el-button>
-      <el-button type="primary" size="mini">导入</el-button>
-      <el-button type="primary" size="mini">导出</el-button>
+      <label id="importFile" class="import-operate-btn">
+        导入
+        <input type="file" @change="importData($event, 'whole')" name="importFile" id="importFile" class="importFile" />
+      </label>
+      <el-button type="primary" @click="exportData()" size="mini">导出</el-button>
     </div>
     <div class="option-content">
       <div class="option-content-title">
@@ -22,20 +25,29 @@
           <div class="table-content-system">
             <div class="table-column w15">{{ system.title }}</div>
             <div class="table-column w20">
-              <a class="system-url" v-for="url in system.urls" :key="url" :href="url">{{ url }}</a>
+              <a class="system-url" v-for="url in system.urls" target="_blank" :key="url" :href="'http://' + url">{{ url }}</a>
             </div>
             <div class="table-column w15">
-              <el-switch v-model="system.autoLogin" active-color="#13ce66" />
+              <el-switch v-model="system.autoLogin" @change="handleSwitch(system, 'autoLogin')" active-color="#13ce66" />
             </div>
             <div class="table-column w15">
-              <el-switch v-model="system.showUser" active-color="#13ce66" />
+              <el-switch v-model="system.showUser" @change="handleSwitch(system, 'showUser')" active-color="#13ce66" />
             </div>
             <div class="table-column w35">
               <el-button plain type="primary" @click="createOrEditor('add', 'user', system, null)" size="mini">添加用户</el-button>
               <el-button plain type="primary" @click="createOrEditor('edit', 'system', system, null)" size="mini">编辑</el-button>
               <el-button plain type="danger" @click="deleteSystem(system)" size="mini">删除</el-button>
-              <el-button plain type="warning" size="mini">导入</el-button>
-              <el-button plain type="warning" size="mini">导出</el-button>
+              <label id="importUserFile" class="import-operate-plain-btn">
+                导入
+                <input
+                  type="file"
+                  @change="importData($event, 'part', system)"
+                  name="importUserFile"
+                  id="importUserFile"
+                  class="importFile"
+                />
+              </label>
+              <el-button type="primary" plain @click="exportData(system)" size="mini">导出</el-button>
             </div>
           </div>
           <div v-if="system.showUser && system.userList.length > 0" class="table-content-user">
@@ -78,16 +90,21 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, ComputedRef, Ref } from 'vue';
-import { getStoreKey, setStore, createRandomCode } from './../../libs/utils/index';
+import { getStoreKey, setStore, createRandomCode, loadFile } from './../../libs/utils/index';
 import { formItem, systemFormRules } from '../libs/formConfig';
 import { SystemType, UserType } from './../type/storeType';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { compatibleImport } from './../utils/index';
 export default defineComponent({
   name: 'Option',
   setup() {
     const systemList = ref<Array<SystemType>>([]);
     const init = async () => {
       const store = await getStoreKey<{ systemList: Array<SystemType> }>(['systemList']);
+      store.systemList = store.systemList.sort((a, b) => a.sort - b.sort);
+      store.systemList.forEach((x) => {
+        x.userList = x.userList.sort((a, b) => a.sort - b.sort);
+      });
       systemList.value = store.systemList;
     };
     init();
@@ -175,7 +192,7 @@ export default defineComponent({
           urls: editorForm.value.urls.split(','),
           autoLogin: editorForm.value.autoLogin,
           code: editorForm.value.code,
-          sort: 99,
+          sort: editorForm.value.sort,
           showUser: true,
           userList: [],
         });
@@ -205,6 +222,7 @@ export default defineComponent({
             val.urls = editorForm.value.urls.split(',');
             val.autoLogin = editorForm.value.autoLogin;
             val.code = editorForm.value.code;
+            val.sort = editorForm.value.sort;
           }
         });
         setStore({ systemList: systemList }).then(() => {
@@ -282,6 +300,7 @@ export default defineComponent({
         });
       }
     };
+    // 保存
     const submitForm = () => {
       if (!editorFormRef) return;
       editorFormRef.value.validate(async (valid: boolean) => {
@@ -331,16 +350,23 @@ export default defineComponent({
         confirmButtonText: '确认',
         cancelButtonText: '取消',
         type: 'warning',
-      }).then(() => {
-        for (let i = 0; i < systemList.length; i++) {
-          if (systemList[i].id === system.id) {
-            systemList.splice(i, 1);
+      })
+        .then(() => {
+          for (let i = 0; i < systemList.length; i++) {
+            if (systemList[i].id === system.id) {
+              systemList.splice(i, 1);
+            }
           }
-        }
-        setStore({ systemList: systemList }).then(() => {
-          init();
+          setStore({ systemList: systemList }).then(() => {
+            init();
+          });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'warning',
+            message: '取消!',
+          });
         });
-      });
     };
     // 删除用户
     const deleteUser = async (system: SystemType, user: UserType) => {
@@ -349,20 +375,178 @@ export default defineComponent({
         confirmButtonText: '确认',
         cancelButtonText: '取消',
         type: 'warning',
-      }).then(() => {
-        for (let i = 0; i < systemList.length; i++) {
-          if (systemList[i].id === system.id) {
-            for (let j = 0; j < systemList[i].userList.length; j++) {
-              if (systemList[i].userList[j].id === user.id) {
-                systemList[i].userList.splice(i, 1);
+      })
+        .then(() => {
+          for (let i = 0; i < systemList.length; i++) {
+            if (systemList[i].id === system.id) {
+              for (let j = 0; j < systemList[i].userList.length; j++) {
+                if (systemList[i].userList[j].id === user.id) {
+                  systemList[i].userList.splice(i, 1);
+                }
               }
             }
           }
-        }
-        setStore({ systemList: systemList }).then(() => {
-          init();
+          setStore({ systemList: systemList }).then(() => {
+            init();
+          });
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'warning',
+            message: '取消!',
+          });
         });
+    };
+    // 开关
+    const handleSwitch = async (system: SystemType, type: string) => {
+      const { systemList } = await getStoreKey<{ systemList: Array<SystemType> }>(['systemList']);
+      systemList.forEach((x) => {
+        if (x.id === system.id) {
+          x[type] = system[type];
+        }
       });
+      setStore({ systemList: systemList }).then(() => {
+        init();
+      });
+    };
+    // 导入
+    const importData = (e: any, type: string, system: SystemType) => {
+      const file = e.target.files[0];
+      e.target.value = '';
+      let reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = async function (data: ProgressEvent<FileReader>) {
+        let config;
+        try {
+          if (!data.target) return;
+          config = JSON.parse(data.target.result as string);
+        } catch (error) {
+          ElMessage({
+            type: 'error',
+            message: '请使用本插件导出文件!',
+          });
+        }
+        if (!config.key || (config.key !== 'EasySwitchPro' && config.key !== 'EasySwitch')) {
+          ElMessage({
+            type: 'error',
+            message: '请使用本插件导出文件!',
+          });
+          return;
+        }
+        if (config.key === 'EasySwitch') {
+          if (type !== 'whole') {
+            ElMessage({
+              type: 'error',
+              message: '该配置文件仅能全局导入',
+            });
+            return;
+          }
+          const rst = compatibleImport(config);
+          ElMessageBox.confirm('是否确认导入EasySwitch低版本配置文件,该配置会全局覆盖', '温馨提示', {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning',
+          })
+            .then(() => {
+              setStore({ systemList: rst }).then(() => {
+                ElMessage({
+                  type: 'success',
+                  message: '导入成功!',
+                });
+                init();
+              });
+            })
+            .catch(() => {
+              ElMessage({
+                type: 'error',
+                message: '取消导入',
+              });
+            });
+          return;
+        }
+        if (config.key === 'EasySwitchPro') {
+          if (config.type === 'part' && type === 'part') {
+            const partId = config.systemList.id;
+            const loaclSystem = config.systemList;
+            const { systemList } = await getStoreKey<{ systemList: Array<SystemType> }>(['systemList']);
+            let flag = false;
+            systemList.forEach((val) => {
+              if (val.id === partId && system.id === partId) {
+                val.title = loaclSystem.title;
+                val.urls = loaclSystem.urls;
+                val.sort = loaclSystem.sort;
+                val.autoLogin = loaclSystem.autoLogin;
+                val.showUser = loaclSystem.showUser;
+                val.code = loaclSystem.code;
+                val.userList = loaclSystem.userList;
+                flag = true;
+              }
+            });
+            if (flag) {
+              console.log(systemList);
+              setStore({ systemList: systemList }).then(() => {
+                ElMessage({
+                  type: 'success',
+                  message: '导入成功!',
+                });
+                init();
+              });
+            } else {
+              ElMessage({
+                type: 'error',
+                message: '该配置文件,不属于该平台',
+              });
+            }
+            return;
+          }
+          if (config.type === 'whole' && type === 'whole') {
+            const systemList = config.systemList;
+            ElMessageBox.confirm('是否确认导入配置文件,该配置会全局覆盖', '温馨提示', {
+              confirmButtonText: '确认',
+              cancelButtonText: '取消',
+              type: 'warning',
+            })
+              .then(() => {
+                setStore({ systemList: systemList }).then(() => {
+                  ElMessage({
+                    type: 'success',
+                    message: '导入成功!',
+                  });
+                  init();
+                });
+              })
+              .catch(() => {
+                ElMessage({
+                  type: 'error',
+                  message: '取消导入',
+                });
+              });
+            return;
+          }
+          ElMessage({
+            type: 'error',
+            message: '导入文件与导入类型不符!',
+          });
+        }
+      };
+    };
+    // 导出
+    const exportData = async (system?: SystemType) => {
+      let data: SystemType | Array<SystemType>;
+      if (!system) {
+        const { systemList } = await getStoreKey<{ systemList: Array<SystemType> }>(['systemList']);
+        data = systemList;
+      } else {
+        data = system;
+      }
+      const json = {
+        key: 'EasySwitchPro',
+        version: '2.0.0',
+        systemList: data,
+        type: system ? 'part' : 'whole',
+      };
+      const fileNmae = system ? system.title : json.key;
+      loadFile(`${fileNmae}V${json.version}.json`, JSON.stringify(json));
     };
     return {
       systemList,
@@ -377,6 +561,9 @@ export default defineComponent({
       createOrEditor,
       deleteSystem,
       deleteUser,
+      handleSwitch,
+      importData,
+      exportData,
     };
   },
 });
@@ -409,6 +596,50 @@ a {
 }
 .w40 {
   width: 40%;
+}
+.importFile {
+  display: none;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+.import-operate-plain-btn {
+  display: inline-block;
+  line-height: 1;
+  min-height: 40px;
+  white-space: nowrap;
+  cursor: pointer;
+  min-height: 28px;
+  padding: 7px 15px;
+  font-size: 12px;
+  border-radius: 4px;
+  background-color: #ecf5ff;
+  border-color: #b3d8ff;
+  color: #409eff;
+  font-size: 12px;
+  margin: 0 10px;
+  &:hover {
+    background-color: #409eff;
+    color: #fff;
+  }
+}
+.import-operate-btn {
+  display: inline-block;
+  line-height: 1;
+  min-height: 40px;
+  white-space: nowrap;
+  cursor: pointer;
+  min-height: 28px;
+  padding: 7px 15px;
+  font-size: 12px;
+  border-radius: 4px;
+  background-color: #409eff;
+  font-size: 12px;
+  color: #fff;
+  margin: 0 10px;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 .option {
   display: flex;
